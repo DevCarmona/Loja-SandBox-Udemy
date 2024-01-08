@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-//  12 - 4m
+//  14 - 4m
 
 class Home extends CI_Controller {
 
