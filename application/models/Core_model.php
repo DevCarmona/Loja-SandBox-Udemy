@@ -11,7 +11,7 @@ class Core_model extends CI_Model () {
             }
             return $this->db->get($tabela)->result();
         }else {
-            return FALSE;
+            return false;
         }
     }
 
@@ -24,12 +24,51 @@ class Core_model extends CI_Model () {
 
             return $this->db->get($tabela)->row();
         }else {
-            return FALSE;
+            return false;
         }
     }
 
     public function insert($tabela = NULL, $data = NULL, $get_last_id = NULL)
     {
-        
+        if($tabela && $this->db->table_exists($tabela) && is_array($data)) {
+
+            //Insere na sessao o ultimo id inserido na base de dados.
+            if($get_last_id) {
+                $this->session->set_userdata('last_id', $this->td->insert_id());
+            }
+            if($this->db->affected_rows() > 0) {
+                $this->session->set_flashdata('sucesso', 'Dados salvos com sucesso!');
+            }else {
+                $this->session->set_flashdata('erro', 'Não foi possível salvar os dados!');
+            }
+        }else {
+            return false;
+        }
+    }
+
+    public function update($tabela = NULL, $data = NULL, $condicoes = NULL)
+    {
+        if($tabela && $this->db->table_exists($tabela) && is_array($data)) {
+            if($this->db->update($tabela, $data, $condicoes)) {
+                $this->session->set_flashdata('sucesso', 'Dados salvos com sucesso!');
+            }else {
+                $this->session->set_flashdata('erro', 'Não foi possível salvar os dados!');
+            }
+        }else {
+            return false;
+        }
+    }
+
+    public function delete($tabela = NULL, $condicoes = NULL)
+    {
+        if($tabela && $this->db->table_exists($tabela) && is_array($condicoes)) {
+            if($this->db->delete($tabela, $condicoes)) {
+                $this->session->set_flashdata('sucesso', 'Registro excluído com sucesso!');
+            }else {
+                $this->session->set_flashdata('erro', 'Não foi possível excluir o registro!');
+            }
+        }else {
+            false;
+        }
     }
 }
