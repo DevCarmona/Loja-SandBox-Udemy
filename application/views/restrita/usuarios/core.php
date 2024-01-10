@@ -12,40 +12,61 @@
                     <h4><?php echo $titulo; ?></h4>
                   </div>
 
-                  <form name="form_core">
+                  <?php 
+
+                    $atributos= array (
+                      'name' => 'form_core',
+                  );
+                  
+                    if(isset($usuario)) {
+                      $usuario_id = $usuario->id;
+                    } else {
+                      $usuario_id = '';
+                    }
+                  
+                  ?>
+
+                  <?php echo form_open('restrita/usuarios/core/'.$usuario_id, $atributos); ?>
+
                     <div class="card-body">
 
                       <div class="form-row">
                         <div class="form-group col-md-4">
                           <label>Nome</label>
-                          <input type="text" name="first_name" class="form-control" placeholder="Nome" value="<?php echo (isset($usuario) ? $usuario->first_name : ''); ?>">
+                          <input type="text" name="first_name" class="form-control" placeholder="Nome" value="<?php echo (isset($usuario) ? $usuario->first_name : set_value('first_name')); ?>">
+                          <?php echo form_error('first_name', '<div class="text-danger">', '</div>'); ?>
                         </div>
 
                         <div class="form-group col-md-4">
                           <label>Sobrenome</label>
-                          <input type="text" name="last_name" class="form-control" placeholder="Sobrenome" value="<?php echo (isset($usuario) ? $usuario->last_name : ''); ?>">
+                          <input type="text" name="last_name" class="form-control" placeholder="Sobrenome" value="<?php echo (isset($usuario) ? $usuario->last_name : set_value('last_name')); ?>">
+                          <?php echo form_error('last_name', '<div class="text-danger">', '</div>'); ?>
                         </div>
 
                         <div class="form-group col-md-4">
                           <label>Email</label>
-                          <input type="email" name="email" class="form-control" placeholder="E-mail" value="<?php echo (isset($usuario) ? $usuario->email : ''); ?>">
+                          <input type="email" name="email" class="form-control" placeholder="E-mail" value="<?php echo (isset($usuario) ? $usuario->email : set_value('email')); ?>">
+                          <?php echo form_error('email', '<div class="text-danger">', '</div>'); ?>
                         </div>
                       </div>
 
                       <div class="form-row">
                         <div class="form-group col-md-4">
                           <label>Usuario</label>
-                          <input type="text" name="username" class="form-control" placeholder="Usuário" value="<?php echo (isset($usuario) ? $usuario->username : '') ?>">
+                          <input type="text" name="username" class="form-control" placeholder="Usuário" value="<?php echo (isset($usuario) ? $usuario->username : set_value('username')) ?>">
+                          <?php echo form_error('username', '<div class"text-danger">', '</div>'); ?>
                         </div>
 
                         <div class="form-group col-md-4">
                           <label>Senha</label>
                           <input type="password" name="password" class="form-control" placeholder="Senha">
+                          <?php echo form_error('password', '<div class="text-danger">', '</div>'); ?>
                         </div>
 
                         <div class="form-group col-md-4">
                           <label>Confirma</label>
                           <input type="password" name="confirma" class="form-control" placeholder="Confirmação da senha">
+                          <?php echo form_error('confirma', '<div class="text-danger">', '</div>'); ?>
                         </div>
                       </div>
 
@@ -85,14 +106,19 @@
 
                           </select>
                         </div>
+                        <?php if(isset($usuario)): ?>
+                          <input type="hidden" name="usuario_id" value="<?php echo $usuario->id; ?>">
+                        <?php endif; ?>
                       </div>
 
                     </div>
 
                     <div class="card-footer">
-                      <button class="btn btn-primary">Submit</button>
+                      <button class="btn btn-primary mr-2">Salvar</button>
+                      <a class="btn btn-dark" href="<?php echo base_url('restrita/usuarios') ?>">Voltar</a>
                     </div>
-                  </form> 
+                    
+                  <?php echo form_close(); ?>
 
                 </div>
               </div>
