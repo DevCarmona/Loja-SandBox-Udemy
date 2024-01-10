@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Core_model extends CI_Model () {
+class Core_model extends CI_Model {
 
     public function get_all($tabela = NULL, $condicoes = NULL)
     {
