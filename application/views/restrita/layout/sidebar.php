@@ -7,8 +7,8 @@
                     <ul class="sidebar-menu">
                         <li class="menu-header">Main</li>
 
-                        <li class="dropdown">
-                            <a href="index.html" class="nav-link"><i data-feather="home"></i><span>Home</span></a>
+                        <li class="dropdown <?php echo $this->router->fetch_class() == 'home' && $this->router->fetch_method() == 'index' ? 'active' : ''; ?>">
+                            <a href="<?php echo base_url('restrita'); ?>" class="nav-link"><i data-feather="home"></i><span>Home</span></a>
                         </li>
                         
                         <li class="dropdown">
@@ -19,8 +19,8 @@
                             </ul>
                         </li> 
                         
-                        <li class="dropdown">
-                            <a href="index.html" class="nav-link"><i data-feather="users"></i><span>Usuários</span></a>
+                        <li class="dropdown <?php echo $this->router->fetch_class() == 'usuarios' && $this->router->fetch_method() == 'index' ? 'active' : ''; ?>">
+                            <a href="<?php echo base_url('restrita/usuarios'); ?>" class="nav-link"><i data-feather="users"></i><span>Usuários</span></a>
                         </li>
                     </ul>                    
                 </aside>
