@@ -56,12 +56,18 @@ class Usuarios extends CI_Controller {
                 $password = $this->input->post('password');
                 $email = $this->input->post('email');
                 $additional_data = array(
-                    'first_name' => 'Ben',
-                    'last_name' => 'Edmunds',
-                    );
-                $group = array('1'); // Sets user to admin.
+                    'first_name' => $this->input->post('first_name'),
+                    'last_name' => $this->input->post('last_name'),
+                    'active' => $this->input->post('active'),
+                );
+                $group = array($this->input->post('perfil')); // Sets user to admin or customer
             
-                $this->ion_auth->register($username, $password, $email, $additional_data, $group);
+                if($this->ion_auth->register($username, $password, $email, $additional_data, $group)) {
+                    $this->session->set_flashdata('sucesso', 'Dados salvos com sucesso!');
+                }else {
+                    $this->session->set_flashdata('erro', $this->ion_auth->errors());
+                }
+                redirect('restrita/usuarios');
             
             }else {
                 //  Erro de validação
@@ -74,8 +80,6 @@ class Usuarios extends CI_Controller {
                 $this->load->view('restrita/usuarios/core');
                 $this->load->view('restrita/layout/footer');
             }
-
-
 
         } else {
             if(!$usuario = $this->ion_auth->user($usuario_id)->row()) {
