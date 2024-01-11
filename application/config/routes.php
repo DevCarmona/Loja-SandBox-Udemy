@@ -53,4 +53,4 @@ $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['restrita'] = 'restrita/home/index';
+$route['restrita'] = 'restrita/home/index'; //  Regra para redirecionar página
