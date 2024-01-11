@@ -23,7 +23,13 @@ class Login extends CI_Controller {
             $this->session->set_flashdata('sucesso', 'Seja muito bem vindo(a)!');
             redirect('restrita'); //    Regra de redirecionar pág para o Home está no config/routes
         }else {
+            $this->session->set_flashdata('erro', 'Por favor verifique suas credenciais de acesso');
             redirect('restrita/login');
         }
+    }
+
+    public function logout() {
+        $this->ion_auth->logout();
+        redirect('restrita/login');
     }
 }

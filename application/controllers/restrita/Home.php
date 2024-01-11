@@ -7,6 +7,11 @@ class Home extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
+        //  Existe uma sessão ?
+        if (!$this->ion_auth->logged_in()){
+            redirect('restrita/login');
+        }
+  
     }
 
     public function index()
