@@ -3,7 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login extends CI_Controller {
 
-    public function index() {
+    public function index() 
+    {
         $data = array(
             'titulo' => 'Login na área restrita',
 
@@ -14,7 +15,8 @@ class Login extends CI_Controller {
         $this->load->view('restrita/layout/footer');
     }
 
-    public function auth() {
+    public function auth() 
+    {
         $identity = $this->input->post('email');
         $password = $this->input->post('password');
         $remember = ($this->input->post('remember' ? 'TRUE' : 'FALSE'));
@@ -28,7 +30,8 @@ class Login extends CI_Controller {
         }
     }
 
-    public function logout() {
+    public function logout() 
+    {
         $this->ion_auth->logout();
         redirect('restrita/login');
     }

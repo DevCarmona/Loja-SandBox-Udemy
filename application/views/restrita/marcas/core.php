@@ -39,7 +39,7 @@
 
                             <div class="form-group col-md-4">
                                 <label for="inputState">Ativa</label>
-                                <select id="inputState" class="form-control" name="active">
+                                <select id="inputState" class="form-control" name="marca_ativa">
                                     <?php if(isset($marca)): ?>
                                         <option value="1" <?php echo ($marca->marca_ativa == 1 ? 'selected' : ''); ?>>Sim</option>
                                         <option value="0" <?php echo ($marca->marca_ativa == 0 ? 'selected' : ''); ?>>Não</option>
@@ -47,8 +47,16 @@
                                         <option value="1">Sim</option>
                                         <option value="0">Não</option>
                                     <?php endif;?>
-                                </select>
+                                </select>                                
                             </div>
+
+                            <?php if(isset($marca)): ?>
+                                <div class="form-group col-md-4">
+                                    <label>Metalink da marca</label>
+                                    <input type="text" name="marca_meta_link" class="form-control border-0" value="<?php echo $marca->marca_meta_link; ?>" readonly="">
+                                </div>
+                            <?php endif; ?>
+
                         </div>
 
                         <div class="form-row">

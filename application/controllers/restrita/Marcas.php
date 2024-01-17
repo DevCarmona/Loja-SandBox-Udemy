@@ -3,7 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Marcas extends CI_Controller {
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
         // if(!$this->ion_auth->logged_in()) {
@@ -11,7 +12,8 @@ class Marcas extends CI_Controller {
         // }
     }
 
-    public function index() {
+    public function index()
+    {
 
         $data = array(
             'titulo' => 'Marcas cadastradas',
@@ -37,7 +39,8 @@ class Marcas extends CI_Controller {
         $this->load->view('restrita/layout/footer');
     }
 
-    public function core($marca_id = NULL) {
+    public function core($marca_id = NULL)
+    {
 
         if(!$marca_id) {
             //  Cadastrando
@@ -48,27 +51,58 @@ class Marcas extends CI_Controller {
             }else {
                 //  Editando
 
-                $this->form_validation->set_rules('marca_nome', 'Nome da marca', 'trim|required|min_length[2]|max_length[40]');
+                $this->form_validation->set_rules('marca_nome', 'Nome da marca', 'trim|required|min_length[2]|max_length[40]|callback_valida_nome_marca');
 
-                if($this->form_validation->run()) {
-                    echo '<pre>';
-                    print_r($this->input->post());
-                    exit();
+                if($this->form_validation->run()) {                    
+                    $data = elements(
+                        array(
+                            'marca_nome',
+                            'marca_ativa',
+                            'marca_meta_link',
+                        ), $this->input->post()
+                    );
+                    //  Criando o meta link
+                    $data ['marca_meta_link'] = url_amigavel($data['marca_meta_link']);
+
+                    $data = html_escape($data);
+
+                    $this->core_model->update('marcas', $data, array('marca_id' => $marca_id));
+                    redirect('restrita/marcas');
+
                 }else {
                     //  Erro de validação
                     $data = array(
                         'titulo' => 'Editar marca',
                         'marca' => $marca,
                     );
-            
-                    // echo '<pre>';
-                    // print_r($data['marcas']);
-                    // exit();
-            
+
                     $this->load->view('restrita/layout/header', $data);
                     $this->load->view('restrita/marcas/core');
                     $this->load->view('restrita/layout/footer');
                 }
+            }
+        }
+    }
+
+    public function valida_nome_marca($marca_nome)
+    {
+        $marca_id = $this->input->post('marca_id');
+
+        if(!$marca_id) {
+            //  Cadastrando
+            if($this->core_model->get_by_id('marcas', array('marca_nome' => $marca_nome))) {
+                $this->form_validation->set_message('valida_nome_marca', 'Essa marca já existe');
+                return false;
+            }else {
+                return true;
+            }
+        }else{
+            //  Editando
+            if($this->core_model->get_by_id('marcas', array('marca_nome' => $marca_nome, 'marca_id !=' => $marca_id))) {
+                $this->form_validation->set_message('valida_nome_marca', 'Essa marca já existe');
+                return false;
+            }else {
+                return true;
             }
         }
     }
