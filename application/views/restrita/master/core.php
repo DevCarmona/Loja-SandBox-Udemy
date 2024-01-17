@@ -18,31 +18,31 @@
                       'name' => 'form_core',
                   );
                   
-                    if(isset($marca)) {
-                      $marca_id = $marca->marca_id;
+                    if(isset($master)) {
+                      $categoria_pai_id = $master->categoria_pai_id;
                     } else {
-                      $marca_id = '';
+                      $categoria_pai_id = '';
                     }
                   
                   ?>
 
-                  <?php echo form_open('restrita/marcas/core/'.$marca_id, $atributos); ?>
+                  <?php echo form_open('restrita/master/core/'.$categoria_pai_id, $atributos); ?>
 
                     <div class="card-body">
 
                         <div class="form-row">                            
                             <div class="form-group col-md-4">
-                                <label>Nome da marca</label> <!-- set_value = Mantem o q foi preenchido  -->
-                                <input type="text" name="marca_nome" class="form-control" placeholder="Nome" value="<?php echo (isset($marca) ? $marca->marca_nome : set_value('marca_nome')); ?>">
-                                <?php echo form_error('marca_nome', '<div class="text-danger">', '</div>'); ?>
+                                <label>Nome da categoria pai</label> <!-- set_value = Mantem o q foi preenchido  -->
+                                <input type="text" name="categoria_pai_nome" class="form-control" placeholder="Nome da categoria pai" value="<?php echo (isset($master) ? $master->categoria_pai_nome : set_value('categoria_pai_nome')); ?>">
+                                <?php echo form_error('categoria_pai_nome', '<div class="text-danger">', '</div>'); ?>
                             </div>
 
                             <div class="form-group col-md-4">
                                 <label for="inputState">Ativa</label>
-                                <select id="inputState" class="form-control" name="marca_ativa">
-                                    <?php if(isset($marca)): ?>
-                                        <option value="1" <?php echo ($marca->marca_ativa == 1 ? 'selected' : ''); ?>>Sim</option>
-                                        <option value="0" <?php echo ($marca->marca_ativa == 0 ? 'selected' : ''); ?>>Não</option>
+                                <select id="inputState" class="form-control" name="categoria_pai_ativa">
+                                    <?php if(isset($master)): ?>
+                                        <option value="1" <?php echo ($master->categoria_pai_ativa == 1 ? 'selected' : ''); ?>>Sim</option>
+                                        <option value="0" <?php echo ($master->categoria_pai_ativa == 0 ? 'selected' : ''); ?>>Não</option>
                                     <?php else: ?>
                                         <option value="1">Sim</option>
                                         <option value="0">Não</option>
@@ -50,18 +50,18 @@
                                 </select>                                
                             </div>
 
-                            <?php if(isset($marca)): ?>
+                            <?php if(isset($master)): ?>
                                 <div class="form-group col-md-4">
-                                    <label>Metalink da marca</label>
-                                    <input type="text" name="marca_meta_link" class="form-control border-0" value="<?php echo $marca->marca_meta_link; ?>" readonly="">
+                                    <label>Metalink da categoria pai</label>
+                                    <input type="text" name="categoria_pai_meta_link" class="form-control border-0" value="<?php echo $master->categoria_pai_meta_link; ?>" readonly="">
                                 </div>
                             <?php endif; ?>
 
                         </div>
 
                         <div class="form-row">
-                            <?php if(isset($marca)): ?>
-                            <input type="hidden" name="marca_id" value="<?php echo $marca->marca_id; ?>">
+                            <?php if(isset($master)): ?>
+                            <input type="hidden" name="categoria_pai_id" value="<?php echo $master->categoria_pai_id; ?>">
                             <?php endif; ?>
                         </div>
 
@@ -69,7 +69,7 @@
 
                     <div class="card-footer">
                       <button class="btn btn-primary mr-2">Salvar</button>
-                      <a class="btn btn-dark" href="<?php echo base_url('restrita/marcas') ?>">Voltar</a>
+                      <a class="btn btn-dark" href="<?php echo base_url('restrita/master') ?>">Voltar</a>
                     </div>
                     
                   <?php echo form_close(); ?>

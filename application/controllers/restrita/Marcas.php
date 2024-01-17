@@ -44,13 +44,39 @@ class Marcas extends CI_Controller {
 
         if(!$marca_id) {
             //  Cadastrando
+            $this->form_validation->set_rules('marca_nome', 'Nome da marca', 'trim|required|min_length[2]|max_length[40]|callback_valida_nome_marca');
+
+            if($this->form_validation->run()) {                    
+                $data = elements(
+                    array(
+                        'marca_nome',
+                        'marca_ativa',
+                    ), $this->input->post()
+                );
+                //  Criando o meta link
+                $data ['marca_meta_link'] = url_amigavel($data['marca_nome']);
+
+                $data = html_escape($data);
+
+                $this->core_model->insert('marcas', $data);
+                redirect('restrita/marcas');
+
+            }else {
+                //  Erro de validação
+                $data = array(
+                    'titulo' => 'Editar marca',
+                );
+
+                $this->load->view('restrita/layout/header', $data);
+                $this->load->view('restrita/marcas/core');
+                $this->load->view('restrita/layout/footer');
+            }
         }else {
             if(!$marca = $this->core_model->get_by_id('marcas', array ('marca_id' => $marca_id))) {
                 $this->session->set_flashdata('erro', 'A marca não foi encontrada');
                 redirect('rstrita/marcas');
             }else {
                 //  Editando
-
                 $this->form_validation->set_rules('marca_nome', 'Nome da marca', 'trim|required|min_length[2]|max_length[40]|callback_valida_nome_marca');
 
                 if($this->form_validation->run()) {                    
@@ -58,11 +84,10 @@ class Marcas extends CI_Controller {
                         array(
                             'marca_nome',
                             'marca_ativa',
-                            'marca_meta_link',
                         ), $this->input->post()
                     );
                     //  Criando o meta link
-                    $data ['marca_meta_link'] = url_amigavel($data['marca_meta_link']);
+                    $data ['marca_meta_link'] = url_amigavel($data['marca_nome']);
 
                     $data = html_escape($data);
 
@@ -105,5 +130,23 @@ class Marcas extends CI_Controller {
                 return true;
             }
         }
+    }
+
+    public function delete($marca_id = NULL)
+    {
+        $marca_id = (int) $marca_id;
+
+        if(!$marca_id || !$this->core_model->get_by_id('marcas', array('marca_id ' => $marca_id))) {
+            $this->session->set_flashdata('erro', 'A marca não foi encontrada');
+            redirect('restrita/marcas');
+        }
+
+        if($this->core_model->get_by_id('marcas', array('marca_id ' => $marca_id, 'marca_ativa' => 1))) {
+            $this->session->set_flashdata('erro', 'Não é possível excluir uma marca ativa!');
+            redirect('restrita/marcas');
+        }
+
+        $this->core_model->delete('marcas', array('marca_id' => $marca_id));
+        redirect('restrita/marcas');
     }
 }
